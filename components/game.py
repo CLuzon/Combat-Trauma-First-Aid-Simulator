@@ -6,7 +6,8 @@ from components.dictionary import show_dictionary
 from components.configure import show_settings
 from components.explanation import show_explanations
 from components.game_fin import show_result
-from components.field_manual_theme import apply_field_manual_theme, manual_header
+from components.field_manual_theme import apply_field_manual_theme
+from components.ui_loader import render_html
 
 ### Excel群
 tp_df = pd.read_excel("db/stories.xlsx", sheet_name="topic")
@@ -220,6 +221,7 @@ def main_text():
         st.session_state.choice_panel = True
 
 
+
 if st.session_state.is_back:
     initialize()
     st.session_state.is_back = False
@@ -231,12 +233,16 @@ st.set_page_config(
     layout="centered",
 )
 apply_field_manual_theme()
-manual_header(
-    "FIELD MEDICAL TRAINING MANUAL / ACTIVE SCENARIO",
-    "戦闘外傷救護シミュレーター",
-    "状況報告を読み、脅威・傷病者・任務を同時に評価して行動を決定すること。",
-    "SCENARIO RECORD",
+render_html(
+    "home.html",
+    {
+        "document_code": "FIELD MEDICAL TRAINING MANUAL / FIELD REPORT",
+        "title": "戦闘外傷救護シミュレーター",
+        "description": "状況を確認し、最も適切な行動を選択せよ。",
+        "classification": "ACTIVE TRAINING",
+    }
 )
+
 
 with st.container(width="stretch", horizontal_alignment="center"):
     main_text()
@@ -276,11 +282,3 @@ elif st.session_state.is_finish:
     show_result(st.session_state.uni_score)
 else:
     st.session_state.explanation = False
-
-if st.session_state.bgm_on:
-    st.audio(
-        "bgm/own_my_mind.mp3",
-        format="audio/mpeg",
-        autoplay=True,
-        loop=True,
-    )

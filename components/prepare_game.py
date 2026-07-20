@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from components.field_manual_theme import apply_field_manual_theme, manual_header
+from components.field_manual_theme import apply_field_manual_theme
+from components.ui_loader import render_html
 
 tp_df = pd.read_excel("db/stories.xlsx", sheet_name="topic")
 
@@ -8,6 +9,8 @@ if "filter_id" not in st.session_state:
     st.session_state.filter_id = None
 if "take_switch" not in st.session_state:
     st.session_state.take_switch = False
+
+
 
 
 @st.dialog("シナリオ索引")
@@ -34,12 +37,17 @@ st.set_page_config(
     layout="centered",
 )
 apply_field_manual_theme()
-manual_header(
-    "FIELD MEDICAL TRAINING MANUAL / MODULE SELECT",
-    "訓練モードを選択",
-    "無作為にシナリオを開始するか、索引から特定の訓練記録を指定すること。",
-    "TRAINING MODE",
+
+render_html(
+    "home.html",
+    {
+        "title": "訓練モードを選択T",
+        "document_code": "FIELD MEDICAL TRAINING MANUAL / MODULE SELECT",
+        "description": "無作為にシナリオを開始するか、索引から特定の訓練記録を指定すること。",
+        "classification": "TRAINING MODE"
+    }
 )
+
 
 with st.container(width="stretch", horizontal_alignment="center"):
     if st.button("01　ノーマル訓練", width=260):

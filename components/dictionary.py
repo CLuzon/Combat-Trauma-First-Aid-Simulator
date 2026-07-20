@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 from components.field_manual_theme import apply_field_manual_theme
+from components.ui_loader import render_html
 
 
 @st.cache_data
@@ -15,14 +16,7 @@ def show_dictionary():
     apply_field_manual_theme()
     dictionary_df = load_dictionary()
 
-    st.markdown(
-        """
-        <div class="manual-code">FIELD MEDICAL GLOSSARY / REFERENCE INDEX</div>
-        <h3 style="margin-top:1rem;">戦闘外傷救護・用語辞書</h3>
-        <p>訓練記録内で使用される専門用語を確認する。</p>
-        """,
-        unsafe_allow_html=True,
-    )
+    render_html("dictionary.html")
 
     keyword = st.text_input(
         "索引語を検索",

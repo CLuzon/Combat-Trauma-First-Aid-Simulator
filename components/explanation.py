@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from components.field_manual_theme import apply_field_manual_theme
+from components.ui_loader import render_html
 
 if "ans" not in st.session_state:
     st.session_state.ans = 0
@@ -22,17 +23,13 @@ def show_explanations(ans, val, table, uni_score):
         "manual-stamp-failure" if val in {"死亡", "悪化"} else "manual-stamp-success"
     )
 
-    st.markdown(
-        f"""
-        <div class="manual-code">AFTER ACTION REVIEW / MEDICAL DECISION RECORD</div>
-        <div class="{evaluation_class}">{val}</div>
-        <div class="manual-status">
-          <div class="meta-cell"><strong>SELECTED SCORE</strong>{ans}</div>
-          <div class="meta-cell"><strong>TOTAL SCORE</strong>{uni_score}</div>
-          <div class="meta-cell"><strong>RECORD STATUS</strong>COMPLETE</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    render_html(
+        "explanation.html", {
+            "evaluation_class": evaluation_class,
+            "ans": ans,
+            "uni_score": uni_score,
+            "val": val
+        }
     )
 
     new_table = table.rename(
