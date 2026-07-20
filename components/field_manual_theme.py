@@ -1,0 +1,272 @@
+import streamlit as st
+
+
+def apply_field_manual_theme() -> None:
+    """Apply the shared Field Manual visual theme to the current Streamlit page."""
+    st.html(
+        """
+        <style>
+        :root {
+            --paper: #c9bf9d;
+            --paper-light: #ded5b7;
+            --paper-dark: #b3a984;
+            --ink: #24271f;
+            --ink-soft: #45483b;
+            --olive: #4b5338;
+            --olive-dark: #303725;
+            --stamp: #8b342d;
+            --line: rgba(36, 39, 31, .55);
+        }
+
+        .stApp {
+            background:
+                repeating-linear-gradient(0deg, rgba(40,42,32,.025) 0, rgba(40,42,32,.025) 1px, transparent 1px, transparent 4px),
+                radial-gradient(circle at 50% 12%, #77755f 0%, #44483a 52%, #292d25 100%);
+            color: var(--ink);
+        }
+
+        .block-container {
+            max-width: 880px;
+            padding-top: 2.2rem;
+            padding-bottom: 4rem;
+        }
+
+        #MainMenu, footer, header { visibility: hidden; }
+
+        h1, h2, h3, h4, p, label, .stMarkdown, [data-testid="stText"] {
+            color: var(--ink);
+        }
+
+        .manual-sheet {
+            position: relative;
+            padding: 1.05rem;
+            margin-bottom: 1.2rem;
+            background: var(--paper);
+            border: 2px solid var(--ink);
+            box-shadow: 10px 12px 0 rgba(18,21,16,.32), 0 24px 60px rgba(0,0,0,.24);
+        }
+
+        .manual-sheet::before {
+            content: "FOR TRAINING USE";
+            position: absolute;
+            right: 1rem;
+            top: .75rem;
+            padding: .24rem .5rem;
+            border: 2px solid var(--stamp);
+            color: var(--stamp);
+            font-weight: 900;
+            font-size: .62rem;
+            letter-spacing: .12em;
+            transform: rotate(2deg);
+            opacity: .92;
+        }
+
+        .manual-border {
+            border: 1px solid var(--ink);
+            padding: 1.45rem 1.25rem 1.15rem;
+            background:
+                linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.08)),
+                repeating-linear-gradient(90deg, transparent, transparent 34px, rgba(55,57,44,.025) 35px);
+        }
+
+        .manual-code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .68rem;
+            letter-spacing: .12em;
+            color: var(--olive-dark);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: .65rem;
+        }
+
+        .manual-title {
+            margin: 1.35rem 0 .55rem;
+            font-size: clamp(1.55rem, 4vw, 2.25rem);
+            line-height: 1.25;
+            color: var(--ink);
+            font-weight: 900;
+            letter-spacing: .03em;
+        }
+
+        .manual-subtitle {
+            color: var(--ink-soft);
+            font-size: .92rem;
+            line-height: 1.75;
+        }
+
+        .manual-rule {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            margin-top: 1.2rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .67rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+        }
+
+        .manual-rule::before, .manual-rule::after {
+            content: "";
+            height: 1px;
+            background: var(--ink);
+            flex: 1;
+        }
+
+        .manual-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .55rem;
+            margin-top: .9rem;
+        }
+
+        .meta-cell {
+            border: 1px solid var(--line);
+            padding: .55rem .62rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .68rem;
+        }
+
+        .meta-cell strong {
+            display: block;
+            color: #585b4d;
+            font-size: .6rem;
+            letter-spacing: .08em;
+            margin-bottom: .18rem;
+        }
+
+        .manual-card {
+            background: var(--paper-light);
+            border: 2px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--olive-dark);
+            padding: 1rem 1.1rem;
+            margin: .8rem 0;
+            color: var(--ink);
+        }
+
+        .manual-card-label {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: var(--olive-dark);
+            font-size: .66rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: .35rem;
+            margin-bottom: .65rem;
+        }
+
+        .manual-status {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .5rem;
+            margin: .75rem 0 1rem;
+        }
+
+        .manual-stamp-success, .manual-stamp-failure {
+            display: inline-block;
+            padding: .35rem .75rem;
+            border: 3px solid;
+            font-weight: 900;
+            letter-spacing: .14em;
+            transform: rotate(-1deg);
+            margin: .3rem 0 .9rem;
+        }
+
+        .manual-stamp-success { color: var(--olive); border-color: var(--olive); }
+        .manual-stamp-failure { color: var(--stamp); border-color: var(--stamp); }
+
+        div[data-testid="stVerticalBlockBorderWrapper"] {
+            background: var(--paper-light);
+            border: 2px solid var(--ink) !important;
+            border-radius: 0 !important;
+            box-shadow: 4px 4px 0 var(--olive-dark);
+        }
+
+        .stButton > button {
+            min-height: 44px;
+            border-radius: 0;
+            border: 2px solid var(--ink);
+            background: var(--paper-light);
+            color: var(--ink);
+            font-weight: 850;
+            letter-spacing: .05em;
+            box-shadow: 4px 4px 0 var(--olive-dark);
+            transition: .12s ease;
+        }
+
+        .stButton > button:hover {
+            background: var(--olive);
+            color: #f0ead3;
+            border-color: var(--ink);
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0 var(--olive-dark);
+        }
+
+        .stButton > button:focus:not(:active) {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        [data-testid="stDialog"] > div,
+        [data-testid="stDialog"] section {
+            background: var(--paper-light) !important;
+            border: 2px solid var(--ink);
+            border-radius: 0 !important;
+            color: var(--ink);
+        }
+
+        [data-testid="stDialog"] h2,
+        [data-testid="stDialog"] h3,
+        [data-testid="stDialog"] p,
+        [data-testid="stDialog"] div,
+        [data-testid="stDialog"] span {
+            color: var(--ink);
+        }
+
+        [data-testid="stDataFrame"], [data-testid="stTable"] {
+            border: 2px solid var(--ink);
+            border-radius: 0 !important;
+            background: var(--paper-light);
+        }
+
+        [data-testid="stDataFrame"] * {
+            border-radius: 0 !important;
+        }
+
+        [data-testid="stAudio"] { display: none; }
+
+        .manual-note {
+            text-align: center;
+            margin-top: 1.15rem;
+            color: #d8d3ba;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .66rem;
+            letter-spacing: .12em;
+        }
+
+        @media (max-width: 640px) {
+            .block-container { padding-top: 1rem; }
+            .manual-sheet::before {
+                position: static;
+                display: inline-block;
+                margin-bottom: .45rem;
+            }
+            .manual-meta, .manual-status { grid-template-columns: 1fr; }
+        }
+        </style>
+        """
+    )
+
+
+def manual_header(code: str, title: str, subtitle: str, section: str) -> None:
+    st.markdown(
+        f"""
+        <div class="manual-sheet">
+          <div class="manual-border">
+            <div class="manual-code">{code}</div>
+            <h1 class="manual-title">{title}</h1>
+            <div class="manual-subtitle">{subtitle}</div>
+            <div class="manual-rule">{section}</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )

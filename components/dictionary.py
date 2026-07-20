@@ -1,24 +1,51 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+from components.field_manual_theme import apply_field_manual_theme
+
 
 @st.cache_data
 def load_dictionary():
     file_path = Path(__file__).parent.parent / "db/dictionary.xlsx"
+    return pd.read_excel(file_path, usecols=["name", "explanation"])
 
-    return pd.read_excel(
-        file_path,
-        usecols = ["name", "explanation"]
-    )
-    
 
-@st.dialog("辞書", width=800)
+@st.dialog("用語索引", width=900)
 def show_dictionary():
+    apply_field_manual_theme()
     dictionary_df = load_dictionary()
-    st.subheader("戦闘外傷救護：辞書")
 
+    st.markdown(
+        """
+        <div class="manual-code">FIELD MEDICAL GLOSSARY / REFERENCE INDEX</div>
+        <h3 style="margin-top:1rem;">戦闘外傷救護・用語辞書</h3>
+        <p>訓練記録内で使用される専門用語を確認する。</p>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    keyword = st.text_input(
+        "索引語を検索",
+        placeholder="例：止血、気道、搬送",
+    )
+
+    filtered_df = dictionary_df
+    if keyword:
+        mask = (
+            dictionary_df["name"].astype(str).str.contains(keyword, case=False, na=False)
+            | dictionary_df["explanation"]
+            .astype(str)
+            .str.contains(keyword, case=False, na=False)
+        )
+        filtered_df = dictionary_df.loc[mask]
+
+    st.caption(f"INDEX ENTRIES：{len(filtered_df)} / {len(dictionary_df)}")
     st.dataframe(
-        dictionary_df,
+        filtered_df,
         use_container_width=True,
         hide_index=True,
+        column_config={
+            "name": st.column_config.TextColumn("用語", width="medium"),
+            "explanation": st.column_config.TextColumn("説明", width="large"),
+        },
     )
